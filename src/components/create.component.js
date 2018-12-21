@@ -67,7 +67,6 @@ export default class Create extends Component {
             <input type="text" 
               className="form-control"
               placeholder="Super Cool Enterprises, LLC."
-              defaultValue="Super Cool Enterprises, LLC."
               value={this.state.employer_name}
               onChange={this.onChangeEmployerName}
             />
