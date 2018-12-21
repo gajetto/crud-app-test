@@ -12,3 +12,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.topmenu {
+  flex-direction: row;
+}
+#navbarSupportedContent.topmenu ul li.nav-item {
+  display: inline;
+  width: 20%;
+}
+#navbarSupportedContent .navbar-nav {
+  flex-direction: initial;
+}

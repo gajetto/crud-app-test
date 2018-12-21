@@ -12,17 +12,17 @@ class App extends Component {
       <Router>
         <div className="container">
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <Link to={'/'} className="navbar-brand">Employee Management</Link>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <Link to={'/index'} className="navbar-brand">Employee Management</Link>
+            {/* <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button> */}
+            <div className="topmenu navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                  <Link to={'/'} className="nav-link">Home</Link>
+                <li className="nav-item">
+                  <Link to={'/create'} className="nav-link">Add New</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to={'/create'} className="nav-link">Create</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to={'/index'} className="nav-link">Show All</Link>
+                  <Link to={'/index'} className="nav-link">List All</Link>
                 </li>
               </ul>
             </div>

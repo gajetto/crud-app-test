@@ -61,10 +61,10 @@ export default class Edit extends Component {
   render() {
     return (
       <div style={{ marginTop: 10 }}>
-        <h3 align="center">Update Employer</h3>
+        <h3 align="center">Update Info</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
-            <label>Person Name:  </label>
+            <label>Employee Name:  </label>
             <input 
               type="text" 
               className="form-control" 
@@ -90,7 +90,7 @@ export default class Edit extends Component {
           </div>
           <div className="form-group">
             <input type="submit" 
-              value="Update Employer" 
+              value="Update Employee" 
               className="btn btn-primary"/>
           </div>
         </form>

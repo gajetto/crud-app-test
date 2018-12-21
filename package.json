@@ -1,10 +1,12 @@
 {
-  "name": "reactcrud",
-  "version": "0.1.0",
+  "name": "reactcrudapp",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
-    "bootstrap": "^4.1.3",
+    "bootstrap": "^4.2.1",
+    "jquery": "^3.3.1",
+    "popper": "^1.0.1",
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-router-dom": "^4.3.1",
@@ -24,5 +26,11 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "keywords": [
+    "crud",
+    "api",
+    "database"
+  ],
+  "homepage": "https://github.com/bob2314/react-crud-app.git"
 }

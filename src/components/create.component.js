@@ -54,7 +54,7 @@ export default class Create extends Component {
         <h3 align="center">Add New Employee</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
-            <label>Person Name:  </label>
+            <label>Employee Name:  </label>
             <input 
               type="text" 
               className="form-control" 
@@ -66,6 +66,8 @@ export default class Create extends Component {
             <label>Employer Name: </label>
             <input type="text" 
               className="form-control"
+              placeholder="Super Cool Enterprises, LLC."
+              defaultValue="Super Cool Enterprises, LLC."
               value={this.state.employer_name}
               onChange={this.onChangeEmployerName}
             />

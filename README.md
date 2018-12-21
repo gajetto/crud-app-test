@@ -38,3 +38,23 @@ Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.<br>
+
+## Database
+
+### mlab.com
+- Database:  **tuitiondb**
+- Collection Name: **employer** 
+- DB Connection string located in **api/DB.js**
+
+**Document Sample:**
+````json
+{
+    "_id": {
+        "$oid": "5c1d5011ceeadf45c57d0eb5"
+    },
+    "person_name": "Herman Munster",
+    "employer_name": "Super Cool Enterprises, LLC.",
+    "employer_id_number": 1,
+    "__v": 0
+}
+````
