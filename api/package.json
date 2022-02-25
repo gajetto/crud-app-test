@@ -11,7 +11,7 @@
     "api",
     "database"
   ],
-  "author": "Bob Brennan",
+  "author": "Ludovic Labbé",
   "license": "ISC",
   "private": true,
   "dependencies": {
