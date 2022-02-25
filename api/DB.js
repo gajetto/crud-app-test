@@ -1,4 +1,4 @@
 module.exports = {
-    DB: 'mongodb://demouser:1demouser@ds135714.mlab.com:35714/tuitiondb'
-    // DB: 'mongodb://localhost:27017/reactcrud'
+    DB_TEST: "mongodb+srv://gajetto:Hjh65gfds*Uds@cluster0.xi2k0.mongodb.net/react-db?retryWrites=true&w=majority",
+    //DB_PROD: ""
 }
