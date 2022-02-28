@@ -1,0 +1,42 @@
+name: Deploy to AWS S3-EC2
+
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push events but only for the dev branch
+  push:
+    branches: [main]
+
+ 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: install node js 
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.14.0"
+      - run: npm ci
+      # change connection string to db using PROD CREDENTIALS
+      - run: cd api
+      - run: 
+
+      - run: npm run build
+      - run: npm test
+      
+      - name: Upload App to S3 Bucket
+        uses: jakejarvis/s3-sync-action@master
+        
+        with:
+          args: --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "eu-west-3"
+          SOURCE_DIR: "build"
+          DEST_DIR: "dev"
