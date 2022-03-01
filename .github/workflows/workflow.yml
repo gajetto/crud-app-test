@@ -1,0 +1,79 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: CI/CD pipeline
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  continous integration:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v2
+      
+    - name: Run super-linter
+      uses: github/super-linter@v3
+
+    - name: Use Node.js 16.14
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.14.0
+#        cache: 'npm'
+
+    - name: Install Dependencies and Execute Build Process
+      run: npm ci
+      run: cd api
+      run: npm ci
+      run: npm run build
+
+    -name: Run CRUD Operations Tests
+    - run: run test
+      run: cd ../
+      run: npm test
+
+    - name: Replace Db Connection String From DEV TO PROD --auth
+    - shell: bash
+      env:
+        CONNECTION_DB_TEST : ${{ secrets.CONNECTION_DB_TEST }}
+        CONNECTION_DB_PROD : ${{ secrets.CONNECTION_DB_PROD }}
+      run: |
+         sed -i 's/$CONNECTION_DB_TEST/$CONNECTION_DB_PROD/g' server.js
+
+  
+continuous deployment:
+    runs-on: ubuntu-latest
+    needs: [continuous-integration]
+    if: github.ref == ‘refs/heads/main’
+    steps:
+      -
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id:${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key:${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-3
+
+    - name: Create CodeDeploy Deployment
+    id: deploy
+  # deploy-build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+
+
+  #   - name: Upload App to S3 Bucket
+  #     uses: jakejarvis/s3-sync-action@master
+        
+  #     with:
+  #       args: --follow-symlinks --delete
+  #     env:
+  #       AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }}
+  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #       AWS_REGION: "eu-west-3"
+  #       SOURCE_DIR: "build"
+  #       DEST_DIR: "dev"
+
