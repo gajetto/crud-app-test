@@ -25,17 +25,28 @@ jobs:
         node-version: 16.14.0
 #        cache: 'npm'
 
-    - name: Install Dependencies and Execute Build Process
-    - run: npm install
-    - run: cd api
-    - run: npm install
-    - run: npm run build
 
-    - name: Run CRUD Operations Tests
-    - run: run test
-    - run: cd ../
-    - run: npm test
-    - run: cd api/
+    - name: change directory to api folder
+      run: cd api
+    
+    - name: install modules inside api folder
+      run: npm install
+    
+    - name: Change directory .. back
+      run: cd ../
+
+    - name: install modules root directory
+      run: npm install
+
+    - name: run build 
+      run: npm run build
+
+    - name: run unit testing
+      run: cd api/
+      run: npm test
+
+
+    
   
   continuous_deployment:
     runs-on: ubuntu-latest
@@ -49,9 +60,9 @@ jobs:
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id:${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key:${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region:eu-west-3
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-3
 
     - name: Create CodeDeploy Deployment
       id: deploy
