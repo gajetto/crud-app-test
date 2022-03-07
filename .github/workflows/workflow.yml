@@ -4,7 +4,9 @@
 name: CI/CD pipeline
 
 on:
-  pull_request:
+  #pull_request:
+  #  branches: [ main ]
+  push:
     branches: [ main ]
 
 jobs:
@@ -33,7 +35,20 @@ jobs:
     - run: run test
       run: cd ../
       run: npm test
+      run: cd api/
 
+
+
+  
+continuous deployment:
+    runs-on: ubuntu-latest
+    # Only runs job if previous build step was successful
+    needs: [continuous-integration]
+    #Check if current branch is main by using the command
+    if: github.ref == ‘refs/heads/main’ 
+    
+    steps:
+    
     - name: Replace Db Connection String From DEV TO PROD --auth
     - shell: bash
       env:
@@ -41,13 +56,6 @@ jobs:
         CONNECTION_DB_PROD : ${{ secrets.CONNECTION_DB_PROD }}
       run: |
          sed -i 's/$CONNECTION_DB_TEST/$CONNECTION_DB_PROD/g' server.js
-
-  
-continuous deployment:
-    runs-on: ubuntu-latest
-    needs: [continuous-integration]
-    if: github.ref == ‘refs/heads/main’
-    steps:
       -
 
     - name: Configure AWS Credentials
@@ -59,21 +67,5 @@ continuous deployment:
 
     - name: Create CodeDeploy Deployment
     id: deploy
-  # deploy-build:
-  #   runs-on: ubuntu-latest
-  #   steps:
 
-
-  #   - name: Upload App to S3 Bucket
-  #     uses: jakejarvis/s3-sync-action@master
-        
-  #     with:
-  #       args: --follow-symlinks --delete
-  #     env:
-  #       AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET_NAME }}
-  #       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #       AWS_REGION: "eu-west-3"
-  #       SOURCE_DIR: "build"
-  #       DEST_DIR: "dev"
 

@@ -1,4 +1,12 @@
 #!/bin/bash
-cd /home/ec2-user/app/
-source environment/bin/activate
-supervisord -c supervisord.conf
+
+# cd to root directory where server.js is located
+cd /var/www/react-crud-app/api
+
+
+# start node service --> always restart mode PORT 4000
+npm run daemon
+
+# start react service front PORT 3000
+cd ../src
+npm start

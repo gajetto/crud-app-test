@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const PORT = 4000;
 const cors = require('cors');
 const mongoose = require('mongoose');
-//const config = require('./DB.js');
 const employerRoute = require('./employer.route');
 const Employer = require('./employer.model')
 
@@ -13,12 +12,11 @@ mongoose.Promise = global.Promise;
 
 let password =  process.env.DB_PASSWORD;
 let user = process.env.DB_USER;
+let dbname = process.env.DB_NAME
 
 
-mongoose.connect('mongodb+srv://cluster0.xi2k0.mongodb.net/react-db?retryWrites=true&w=majority',
+mongoose.connect(dbname,
 {
-  //user: process.env.DB_USER,
-  //pass: process.env.DB_PASSWORD,
   user: user,
   pass: password,
   useNewUrlParser: true, 
