@@ -26,16 +26,16 @@ jobs:
 #        cache: 'npm'
 
     - name: Install Dependencies and Execute Build Process
-      run: npm ci
-      run: cd api
-      run: npm install
-      run: npm run build
+    - run: npm install
+    - run: cd api
+    - run: npm install
+    - run: npm run build
 
     - name: Run CRUD Operations Tests
-      run: run test
-      run: cd ../
-      run: npm test
-      run: cd api/
+    - run: run test
+    - run: cd ../
+    - run: npm test
+    - run: cd api/
   
   continuous_deployment:
     runs-on: ubuntu-latest
