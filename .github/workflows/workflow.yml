@@ -28,7 +28,7 @@ jobs:
     - name: Install Dependencies and Execute Build Process
       run: npm ci
       run: cd api
-      run: npm ci
+      run: npm install
       run: npm run build
 
     - name: Run CRUD Operations Tests
@@ -36,9 +36,6 @@ jobs:
       run: cd ../
       run: npm test
       run: cd api/
-
-
-
   
   continuous_deployment:
     runs-on: ubuntu-latest
