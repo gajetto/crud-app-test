@@ -49,15 +49,6 @@ continuous deployment:
     
     steps:
     
-    - name: Replace Db Connection String From DEV TO PROD --auth
-    - shell: bash
-      env:
-        CONNECTION_DB_TEST : ${{ secrets.CONNECTION_DB_TEST }}
-        CONNECTION_DB_PROD : ${{ secrets.CONNECTION_DB_PROD }}
-      run: |
-         sed -i 's/$CONNECTION_DB_TEST/$CONNECTION_DB_PROD/g' server.js
-      -
-
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -66,6 +57,12 @@ continuous deployment:
         aws-region: eu-west-3
 
     - name: Create CodeDeploy Deployment
-    id: deploy
+      id: deploy
+      run: |
+        aws deploy create-deployment \
+          --application-name application-name \
+          --deployment-group-name AppDeploymentGroupName \
+          --deployment-config-name CodeDeployDefault.OneAtATime \
+          --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
 
 
