@@ -43,7 +43,8 @@ jobs:
 
     - name: run unit testing
       run: cd api/
-      run: npm test
+    
+    - run: npm test
 
 
     
