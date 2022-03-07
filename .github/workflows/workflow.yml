@@ -36,9 +36,6 @@ jobs:
       run: cd ../
       run: npm test
       run: cd api/
-
-
-
   
   continuous_deployment:
     runs-on: ubuntu-latest
