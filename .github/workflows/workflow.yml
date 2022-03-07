@@ -53,9 +53,6 @@ jobs:
     runs-on: ubuntu-latest
     # Only runs job if previous build step was successful
     needs: [continuous-integration]
-    #Check if current branch is main by using the command
-    if: github.ref == ‘refs/heads/main’ 
-    
     steps:
     
     - name: Configure AWS Credentials
