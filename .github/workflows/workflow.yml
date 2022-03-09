@@ -25,10 +25,16 @@ jobs:
       run: npm install -g npm@8.5.3
 
     - name: install modules inside api folder
-      run: npm install
+      run: |
+        cd api
+        pwd
+        npm install
     
     - name: Change directory .. back
-      run: cd ../
+      run: |
+        pwd
+        cd ..
+        pwd
 
     - name: install modules root directory
       run: npm install
@@ -40,9 +46,8 @@ jobs:
       run: |
         npm test
         cd api
+        pwd
         npm test
-
-
     
   
   continuous-deployment:
