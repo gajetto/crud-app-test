@@ -20,15 +20,11 @@ mongoose.connect('mongodb+srv://cluster0.xi2k0.mongodb.net/react-db?retryWrites=
   useCreateIndex: true
 });
 
-
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", async function () {
   console.log("Connected successfully");
 });
-
-
-
 
 describe("User Service Unit Tests", function () {
     describe("Save User functionality", function () {
