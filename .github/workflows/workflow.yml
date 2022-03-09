@@ -23,7 +23,7 @@ jobs:
 #        cache: 'npm'
     - name: update npm 
       run: npm install -g npm@8.5.3
-      
+
     - name: install modules inside api folder
       run: npm install
     
@@ -35,10 +35,11 @@ jobs:
 
     - name: run build 
       run: npm run build
-
+#         front unit test and node-server unit test 
     - name: run unit testing
       run: |
-        cd api/
+        npm test
+        cd api
         npm test
 
 
