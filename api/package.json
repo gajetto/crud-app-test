@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "bash -c 'nodemon server.js",
-    "test": "mocha 'server.test.js'"
+    "test": "mocha 'api.test.js'"
   },
   "keywords": [
     "api",
