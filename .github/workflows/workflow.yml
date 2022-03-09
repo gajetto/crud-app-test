@@ -30,6 +30,12 @@ jobs:
         pwd
         npm install
     
+    - name: set up mongodb connection
+      run: |
+        echo -e "DB_PASSWORD={{secrets.DB_PASSWORD_DEV}}" > .env
+        echo -e "DB_USER={{secrets.DB_USER_DEV}}" >> .env
+        echo -e "DB_NAME={{secrets.DB_NAME_DEV}}" >> .env
+
     - name: Change directory .. back
       run: |
         pwd
