@@ -54,6 +54,8 @@ jobs:
         cd api
         pwd
         npm test
+      env:
+        CI: true
     
   
   continuous-deployment:
