@@ -16,12 +16,14 @@ jobs:
     - name: checkout code
       uses: actions/checkout@v2
 
-    - name: Use Node.js 16.14
+    - name: Use Node.js 16.14.0
       uses: actions/setup-node@v2
       with:
         node-version: 16.14.0
 #        cache: 'npm'
-
+    - name: update npm 
+      run: npm install -g npm@8.5.3
+      
     - name: install modules inside api folder
       run: npm install
     
