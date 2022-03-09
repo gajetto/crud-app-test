@@ -10,7 +10,7 @@ on:
   #   branches: [ main ]
 
 jobs:
-  continous_integration:
+  continous-integration:
     runs-on: ubuntu-latest
     steps:
     - name: checkout code
@@ -26,8 +26,6 @@ jobs:
 #        cache: 'npm'
 
 
-    - name: change directory to api folder
-      run: cd api
     
     - name: install modules inside api folder
       run: npm install
@@ -42,17 +40,18 @@ jobs:
       run: npm run build
 
     - name: run unit testing
-      run: cd api/
-    
-    - run: npm test
+      run: |
+        cd api/
+        npm test
 
 
     
   
-  continuous_deployment:
+  continuous-deployment:
     runs-on: ubuntu-latest
     # Only runs job if previous build step was successful
     needs: [continuous-integration]
+    if: github.ref == 'refs/heads/main'
     steps:
     
     - name: Configure AWS Credentials
@@ -66,9 +65,14 @@ jobs:
       id: deploy
       run: |
         aws deploy create-deployment \
-          --application-name application-name \
-          --deployment-group-name AppDeploymentGroupName \
-          --deployment-config-name CodeDeployDefault.OneAtATime \
+          --application-name CRUD_APP_TEST \ 
+          --deployment-group-name FRONT_DG \
+          --deployment-config-name FRONT_DC \
           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
 
 
+# - name: Setup Terraform
+#   uses: hashicorp/setup-terraform@v1
+#   with:
+#     # terraform_version: 0.13.0
+#     cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
