@@ -10,7 +10,7 @@ on:
   #   branches: [ main ]
 
 jobs:
-  continous-integration:
+  continuous-integration:
     runs-on: ubuntu-latest
     steps:
     - name: checkout code
