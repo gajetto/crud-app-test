@@ -20,22 +20,18 @@ mongoose.connect('mongodb+srv://cluster0.xi2k0.mongodb.net/react-db?retryWrites=
   useCreateIndex: true
 });
 
-
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", async function () {
   console.log("Connected successfully");
 });
 
-
-
-
 describe("User Service Unit Tests", function () {
     describe("Save User functionality", function () {
       it("should successfully add a user if the number of users in the DB with the same profiled is zero", async function () {
-        const person_name = "Jérome Bigard";
-        const employer_name = "Peugeot";
-        const person_id_number = 55
+        const person_name = "Hervé Renault";
+        const employer_name = "Saccharine SU";
+        const person_id_number = 5658
         const returnedUser = await saveUser({
           person_name,
           employer_name,

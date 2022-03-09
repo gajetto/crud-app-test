@@ -10,49 +10,59 @@ on:
   #   branches: [ main ]
 
 jobs:
-  continous_integration:
+  continuous-integration:
     runs-on: ubuntu-latest
     steps:
     - name: checkout code
       uses: actions/checkout@v2
-      
-    - name: Run super-linter
-      uses: github/super-linter@v3
 
-    - name: Use Node.js 16.14
+    - name: Use Node.js 16.14.0
       uses: actions/setup-node@v2
       with:
         node-version: 16.14.0
 #        cache: 'npm'
+    - name: update npm 
+      run: npm install -g npm@8.5.3
 
-
-    - name: change directory to api folder
-      run: cd api
-    
     - name: install modules inside api folder
-      run: npm install
+      run: |
+        cd api
+        pwd
+        npm install
     
+    - name: set up mongodb connection
+      run: |
+        echo -e "DB_PASSWORD={{secrets.DB_PASSWORD_DEV}}" > .env
+        echo -e "DB_USER={{secrets.DB_USER_DEV}}" >> .env
+        echo -e "DB_NAME={{secrets.DB_NAME_DEV}}" >> .env
+
     - name: Change directory .. back
-      run: cd ../
+      run: |
+        pwd
+        cd ..
+        pwd
 
     - name: install modules root directory
       run: npm install
 
     - name: run build 
       run: npm run build
-
+#         front unit test and node-server unit test 
     - name: run unit testing
-      run: cd api/
-    
-    - run: npm test
-
-
+      run: |
+        npm test
+        cd api
+        pwd
+        npm test
+      env:
+        CI: true
     
   
-  continuous_deployment:
+  continuous-deployment:
     runs-on: ubuntu-latest
     # Only runs job if previous build step was successful
     needs: [continuous-integration]
+    if: github.ref == 'refs/heads/main'
     steps:
     
     - name: Configure AWS Credentials
@@ -66,9 +76,14 @@ jobs:
       id: deploy
       run: |
         aws deploy create-deployment \
-          --application-name application-name \
-          --deployment-group-name AppDeploymentGroupName \
-          --deployment-config-name CodeDeployDefault.OneAtATime \
+          --application-name CRUD_APP_TEST \ 
+          --deployment-group-name FRONT_DG \
+          --deployment-config-name FRONT_DC \
           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
 
 
+# - name: Setup Terraform
+#   uses: hashicorp/setup-terraform@v1
+#   with:
+#     # terraform_version: 0.13.0
+#     cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
