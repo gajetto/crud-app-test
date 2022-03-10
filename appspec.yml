@@ -5,10 +5,10 @@ files:
    destination: /www/var/
 hooks:
   AfterInstall:
-   - location: scripts/install_node
-     timeout: 300
+   - location: scripts/install_node.sh
+     timeout: 100
      runas: root
   ApplicationStart:
-   - location: scripts/start_server
-     timeout: 300
+   - location: scripts/start_server.sh
+     timeout: 100
      runas: root
