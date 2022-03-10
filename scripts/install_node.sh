@@ -3,16 +3,12 @@
 mkdir /var/www/crud-app-test
 cd /var/www/crud-app-test
 npm install -g npm@8.5.3
+cd src
+npm i --save-dev core-js@3 @babel/runtime-corejs3
 npm install
 
-pwd
-
 cd api
-
 # Install dependencies on react front
-
-pwd
-
 npm install
 
 echo -e "SKIP_PREFLIGHT_CHECK=true
