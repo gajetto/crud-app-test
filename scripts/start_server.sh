@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # cd to root directory where server.js is located
-cd /var/www/crud-app-test/api
+cd /var/www/api
 
 
 # start node service --> always restart mode PORT 4000
