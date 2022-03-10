@@ -1,14 +1,13 @@
 #!/bin/bash
 
-cd /var/www/
+mkdir /var/www/crud-app-test
+cd /var/www/crud-app-test
 npm install -g npm@8.5.3
 npm install
 
 pwd
 
 cd api
-# install forever module for service availaibility
-npm install -g --save forever 
 
 # Install dependencies on react front
 

@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
  - source: /
-   destination: /var/www/
+   destination: /var/www/crud-app-test
 hooks:
   AfterInstall:
    - location: scripts/install_node.sh
@@ -10,5 +10,5 @@ hooks:
      runas: root
   ApplicationStart:
    - location: scripts/start_server.sh
-     timeout: 230
+     timeout: 250
      runas: root

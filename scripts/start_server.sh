@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /var/www/api
+cd /var/www/crud-app-test/api
 # install forever module for service availaibility
 npm install -g --save forever 
 
