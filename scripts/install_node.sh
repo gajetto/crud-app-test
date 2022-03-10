@@ -8,7 +8,7 @@ npm install
 sudo npm install -g --save forever 
 
 # Install dependencies on react front
-cd /api
+cd api
 npm install
 
 echo -e "SKIP_PREFLIGHT_CHECK=true
