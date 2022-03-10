@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
  - source: /
-   destination: /www/var/crud-app-test
+   destination: /www/var/crud-app-test/
 hooks:
   AfterInstall:
    - location: scripts/install_node.sh
