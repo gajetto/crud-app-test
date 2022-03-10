@@ -57,7 +57,7 @@ jobs:
     
   
   continuous-deployment:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04 
     # Only runs job if previous build step was successful
     needs: [continuous-integration]
     
