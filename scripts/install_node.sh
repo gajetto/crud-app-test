@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /var/www/react-crud-app
+cd /var/www/crud-app-test
 sudo npm install -g npm@8.5.3
 npm install
 
