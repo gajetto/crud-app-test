@@ -6,7 +6,7 @@ files:
 hooks:
   AfterInstall:
    - location: scripts/install_node.sh
-     timeout: 600
+     timeout: 730
      runas: root
   ApplicationStart:
    - location: scripts/start_server.sh
