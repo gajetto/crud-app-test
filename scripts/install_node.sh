@@ -2,13 +2,22 @@
 
 mkdir /var/www/crud-app-test
 cd /var/www/crud-app-test
-npm install -g npm@8.5.3
-cd src
-npm i --save-dev core-js@3 @babel/runtime-corejs3
-npm install
 
-cd api
-# Install dependencies on react front
+
+##################################################### EC2 IP ADDRESS SED ##############################################################################
+
+cd /var/www/crud-app-test/src/components
+
+IPADDRESS=$(curl http://checkip.amazonaws.com)
+
+sudo sed -i 's|localhost|'$IPADDRESS'|g' TableRow.js index.component.js create.component.js edit.component.js
+
+npm install -g npm@8.5.3
+
+################################################## NODE DEPENDENCIES ################################################################
+
+cd cd /var/www/crud-app-test/api
+
 npm install
 
 echo -e "SKIP_PREFLIGHT_CHECK=true
@@ -17,10 +26,10 @@ DB_USER=adminReact
 DB_NAME=mongodb://10.0.1.50/react-db?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.2.
 DEBUGLEVEL=5" > .env
 
-cd ../src/components
 
-pwd
+################################################ REACT DEPENDENCIES ####################################################################
 
-IPADDRESS=$(curl http://checkip.amazonaws.com)
+cd /var/www/crud-app-test/src
 
-sudo sed -i 's|localhost|'$IPADDRESS'|g' TableRow.js index.component.js create.component.js edit.component.js
+npm i --save-dev core-js@3 @babel/runtime-corejs3
+npm install

@@ -9,6 +9,7 @@ api/node_modules
 # testing
 /coverage
 .env*
+api/.env*
 # production
 /build
 
