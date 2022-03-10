@@ -36,6 +36,7 @@ jobs:
         echo -e "DB_USER={{secrets.DB_USER_DEV}}" >> .env
         echo -e "DB_NAME={{secrets.DB_NAME_DEV}}" >> .env
 
+        B
     - name: Change directory .. back
       run: |
         pwd
@@ -54,16 +55,16 @@ jobs:
         cd api
         pwd
         npm test
-      env:
-        CI: true
     
   
   continuous-deployment:
     runs-on: ubuntu-latest
     # Only runs job if previous build step was successful
     needs: [continuous-integration]
-    if: github.ref == 'refs/heads/main'
-    steps:
+    
+    #if: github.ref == 'refs/heads/main'
+    
+  steps:
     
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
