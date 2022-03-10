@@ -9,8 +9,7 @@ export default class Index extends Component {
       this.state = {employer: []};
     }
     componentDidMount(){
-      //axios.get('http://localhost:4000/employer')
-      axios.get('http://13.36.140.151:4000/employer')
+      axios.get('http://localhost:4000/employer')
 
         .then(response => {
           this.setState({ employer: response.data });
