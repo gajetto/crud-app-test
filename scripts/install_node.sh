@@ -1,6 +1,5 @@
 #!/bin/bash
 
-mkdir /var/www/crud-app-test
 cd /var/www/crud-app-test
 
 
@@ -16,7 +15,7 @@ npm install -g npm@8.5.3
 
 ################################################## NODE DEPENDENCIES ################################################################
 
-cd cd /var/www/crud-app-test/api
+cd /var/www/crud-app-test/api
 
 npm install
 
