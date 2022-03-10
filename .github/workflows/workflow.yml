@@ -64,7 +64,7 @@ jobs:
     
     #if: github.ref == 'refs/heads/main'
     
-  steps:
+    steps:
     
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
