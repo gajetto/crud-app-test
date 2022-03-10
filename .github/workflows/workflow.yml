@@ -36,7 +36,6 @@ jobs:
         echo -e "DB_USER={{secrets.DB_USER_DEV}}" >> .env
         echo -e "DB_NAME={{secrets.DB_NAME_DEV}}" >> .env
 
-        B
     - name: Change directory .. back
       run: |
         pwd
@@ -48,7 +47,7 @@ jobs:
 
     - name: run build 
       run: npm run build
-#         front unit test and node-server unit test 
+
     - name: run unit testing
       run: |
         npm test
