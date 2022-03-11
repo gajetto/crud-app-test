@@ -31,5 +31,7 @@ npm install
 
 cd /var/www/crud-app-test/src
 
+
+npm config set package-lock false
 npm i --save-dev core-js@3 @babel/runtime-corejs3
 npm install

@@ -9,3 +9,5 @@ npm run daemon
 cd ../src
 
 npm start
+
+echo "started successfully"
