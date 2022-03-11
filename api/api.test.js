@@ -11,6 +11,7 @@ let password =  process.env.DB_PASSWORD;
 let user = process.env.DB_USER;
 let dbname = process.env.DB_NAME;
 
+
 mongoose.connect(dbname,
 {
   user: user,
@@ -18,13 +19,11 @@ mongoose.connect(dbname,
   useNewUrlParser: true, 
   useUnifiedTopology: true, 
   useCreateIndex: true
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", async function () {
-  console.log("Connected successfully");
-});
+}
+  ).then(
+  () => {console.log('Database is connected') },
+  err => { console.log('Can not connect to the database'+ err)}
+);
 
 describe("User Service Unit Tests", function () {
     describe("Save User functionality", function () {
