@@ -38,6 +38,7 @@ jobs:
     - name: install modules root directory
       run: |
         cd ../src
+        pwd
         npm ci
 
     - name: run build 
