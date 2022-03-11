@@ -32,4 +32,4 @@ npm install
 cd /var/www/crud-app-test/src
 
 npm i --save-dev core-js@3 @babel/runtime-corejs3
-npm ci
+npm install
