@@ -8,8 +8,9 @@ mongoose.Promise = global.Promise;
 
 let password =  process.env.DB_PASSWORD;
 let user = process.env.DB_USER;
+let dbname = process.env.DB_NAME;
 
-mongoose.connect('mongodb+srv://cluster0.xi2k0.mongodb.net/react-db?retryWrites=true&w=majority',
+mongoose.connect(dbname,
 {
   //user: process.env.DB_USER,
   //pass: process.env.DB_PASSWORD,
@@ -29,13 +30,13 @@ db.once("open", async function () {
 describe("User Service Unit Tests", function () {
     describe("Save User functionality", function () {
       it("should successfully add a user if the number of users in the DB with the same profiled is zero", async function () {
-        const person_name = "Hervé Renault";
-        const employer_name = "Saccharine SU";
-        const person_id_number = 5658
+        const person_name = "Helmut Schmutz";
+        const employer_name = "Lockhead Avionics";
+        const employer_id_number = 578
         const returnedUser = await saveUser({
           person_name,
           employer_name,
-          person_id_number
+          employer_id_number
       });
       expect(returnedUser.person_name).to.equal(person_name);
     });
