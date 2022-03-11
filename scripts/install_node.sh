@@ -3,7 +3,7 @@
 cd /var/www/crud-app-test
 
 
-##################################################### EC2 IP ADDRESS SED ##############################################################################
+#################################################### EC2 IP ADDRESS SED ##############################################################################
 
 cd /var/www/crud-app-test/src/components
 
@@ -11,7 +11,7 @@ IPADDRESS=$(curl http://checkip.amazonaws.com)
 
 sudo sed -i 's|localhost|'$IPADDRESS'|g' TableRow.js index.component.js create.component.js edit.component.js
 
-npm install -g npm@8.5.3
+npm install -g npm@latest
 
 ################################################## NODE DEPENDENCIES ################################################################
 
@@ -26,9 +26,9 @@ DB_NAME=mongodb://10.0.1.50/react-db?directConnection=true&serverSelectionTimeou
 DEBUGLEVEL=5" > .env
 
 
-################################################ REACT DEPENDENCIES ####################################################################
+################################################# REACT DEPENDENCIES ####################################################################
 
 cd /var/www/crud-app-test/src
 
 npm i --save-dev core-js@3 @babel/runtime-corejs3
-npm install
+npm ci
