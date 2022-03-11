@@ -37,12 +37,11 @@ jobs:
         pwd
         echo -e "SKIP_PREFLIGHT_CHECK=true" > .env
         echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_DEV }}" >> .env
-        echo -e "DB_USER=${{ secrets.DB_USER_DEV }" >> .env
+        echo -e "DB_USER=${{ secrets.DB_USER_DEV }}" >> .env
         echo -e "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
         echo -e "DEBUGLEVEL=5" >> .env
         ls -larth  
         cat .env
-
 
     - name: install modules root directory
       run: |
@@ -68,9 +67,9 @@ jobs:
         pwd
         cd api
         pwd
-        echo -e "DB_PASSWORD={{ secrets.DB_PASSWORD_PROD }}" > .env
-        echo -e "DB_USER={{ secrets.DB_USER_PROD }}" >> .env
-        echo -e "DB_NAME={{ secrets.DB_NAME_PROD }}" >> .env
+        echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" > .env
+        echo -e "DB_USER=${{ secrets.DB_USER_PROD }}" >> .env
+        echo -e "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> .env
 
     
   
