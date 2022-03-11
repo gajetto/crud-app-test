@@ -38,8 +38,7 @@ export default class Create extends Component {
       employer_name: this.state.employer_name,
       employer_id_number: this.state.employer_id_number
     };
-    //axios.post('http://localhost:4000/employer/add', obj)
-     axios.post('http://13.36.140.151:4000/employer/add', obj)
+     axios.post('http://localhost:4000/employer/add', obj)
         .then(res => console.log(res.data));
     
     this.setState({

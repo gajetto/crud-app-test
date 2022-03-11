@@ -8,7 +8,6 @@ on:
    branches: [ main ]
   # push:
   #   branches: [ main ]
-
 jobs:
   continuous-integration:
     runs-on: ubuntu-latest
@@ -22,47 +21,61 @@ jobs:
         node-version: 16.14.0
 #        cache: 'npm'
     - name: update npm 
-      run: npm install -g npm@8.5.3
+      run: npm install -g npm@latest
 
     - name: install modules inside api folder
       run: |
+        pwd
         cd api
         pwd
         npm install
     
     - name: set up mongodb connection
       run: |
-        echo -e "DB_PASSWORD={{secrets.DB_PASSWORD_DEV}}" > .env
-        echo -e "DB_USER={{secrets.DB_USER_DEV}}" >> .env
-        echo -e "DB_NAME={{secrets.DB_NAME_DEV}}" >> .env
-
-    - name: Change directory .. back
-      run: |
         pwd
-        cd ..
+        cd api
         pwd
+        echo -e "SKIP_PREFLIGHT_CHECK=true" > .env
+        echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_DEV }}" >> .env
+        echo -e "DB_USER=${{ secrets.DB_USER_DEV }}" >> .env
+        echo -e "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
+        echo -e "DEBUGLEVEL=5" >> .env
+        ls -larth  
+        cat .env
 
     - name: install modules root directory
-      run: npm install
+      run: |
+        pwd
+        cd src
+        pwd
+        npm ci
 
     - name: run build 
       run: npm run build
-#         front unit test and node-server unit test 
-    - name: run unit testing
+
+    - name: run unit testing  
       run: |
-        npm test
-        cd api
+        cd src
         pwd
         npm test
-      env:
-        CI: true
+        cd ../api
+        pwd
+        npm test
+
+    - name: setting up production mongodb access
+      run : |
+        pwd
+        cd api
+        pwd
+        echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" > .env
+        echo -e "DB_USER=${{ secrets.DB_USER_PROD }}" >> .env
+        echo -e "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> .env
+
     
   
   continuous-deployment:
     runs-on: ubuntu-latest
-    # Only runs job if previous build step was successful
     needs: [continuous-integration]
-    if: github.ref == 'refs/heads/main'
     steps:
     
     - name: Configure AWS Credentials
@@ -75,15 +88,4 @@ jobs:
     - name: Create CodeDeploy Deployment
       id: deploy
       run: |
-        aws deploy create-deployment \
-          --application-name CRUD_APP_TEST \ 
-          --deployment-group-name FRONT_DG \
-          --deployment-config-name FRONT_DC \
-          --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
-
-
-# - name: Setup Terraform
-#   uses: hashicorp/setup-terraform@v1
-#   with:
-#     # terraform_version: 0.13.0
-#     cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        aws deploy create-deployment --application-name CRUD_APP_TEST --deployment-group-name FRONT_DG --deployment-config-name FRONT_DC --github-location repository=${{ github.repository }},commitId=${{ github.sha }}

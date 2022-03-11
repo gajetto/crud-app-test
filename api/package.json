@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "bash -c 'nodemon server.js",
+    "daemon": "forever start server.js",
     "test": "mocha --exit 'api.test.js'"
   },
   "keywords": [

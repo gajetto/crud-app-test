@@ -1,37 +1,36 @@
 const { saveUser } = require("./add-user");
+const employerRoute = require('./employer.route');
+const Employer = require('./employer.model');
 const { expect } = require("chai");
 const mongoose = require("mongoose");
 const env = require('dotenv').config();
-const TEST_PORT = 4001;
 
 mongoose.Promise = global.Promise;
 
 let password =  process.env.DB_PASSWORD;
 let user = process.env.DB_USER;
+let dbname = process.env.DB_NAME;
 
-mongoose.connect('mongodb+srv://cluster0.xi2k0.mongodb.net/react-db?retryWrites=true&w=majority',
+
+mongoose.connect(dbname,
 {
-  //user: process.env.DB_USER,
-  //pass: process.env.DB_PASSWORD,
   user: user,
   pass: password,
   useNewUrlParser: true, 
   useUnifiedTopology: true, 
   useCreateIndex: true
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error: "));
-db.once("open", async function () {
-  console.log("Connected successfully");
-});
+}
+  ).then(
+  () => {console.log('Database is connected') },
+  err => { console.log('Can not connect to the database'+ err)}
+);
 
 describe("User Service Unit Tests", function () {
     describe("Save User functionality", function () {
       it("should successfully add a user if the number of users in the DB with the same profiled is zero", async function () {
-        const person_name = "Hervé Renault";
-        const employer_name = "Saccharine SU";
-        const person_id_number = 5658
+        const person_name = "Helmut Schmutz";
+        const employer_name = "Lockhead Avionics";
+        const person_id_number = 578
         const returnedUser = await saveUser({
           person_name,
           employer_name,

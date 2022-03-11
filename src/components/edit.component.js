@@ -18,7 +18,6 @@ export default class Edit extends Component {
 
   componentDidMount() {
     axios.get('http://localhost:4000/employer/edit/'+this.props.match.params.id)
-    //http://localhost:4000/employer/edit/
       .then(response => {
         this.setState({ 
           person_name: response.data.person_name, 
