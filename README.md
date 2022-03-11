@@ -1,6 +1,3 @@
-# ![Tuitio.io](https://www.tuition.io/wp-content/themes/tuition.io/assets/img/tiologo.svg)
-
-
 ## 1. Employee CRUD App 
 Demoing basic functionality to update and display simple Employees and Employer data.
 
