@@ -53,6 +53,13 @@ jobs:
         cd api
         pwd
         npm test
+
+    - name: setting up production mongodb access
+      run : |
+        echo -e "DB_PASSWORD={{secrets.DB_PASSWORD_PROD}}" > .env
+        echo -e "DB_USER={{secrets.DB_USER_PROD}}" >> .env
+        echo -e "DB_NAME={{secrets.DB_NAME_PROD}}" >> .env
+
     
   
   continuous-deployment:

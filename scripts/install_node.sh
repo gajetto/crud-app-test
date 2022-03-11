@@ -19,11 +19,12 @@ cd /var/www/crud-app-test/api
 
 npm install
 
-echo -e "SKIP_PREFLIGHT_CHECK=true
-DB_PASSWORD=admin123456 
-DB_USER=adminReact 
-DB_NAME=mongodb://10.0.1.50/react-db?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.2.
-DEBUGLEVEL=5" > .env
+# echo -e "SKIP_PREFLIGHT_CHECK=true
+# DB_PASSWORD=admin123456 
+# DB_USER=adminReact 
+# DB_NAME=mongodb://10.0.1.50/react-db?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.2.
+# DEBUGLEVEL=5" > .env
+
 
 
 ################################################# REACT DEPENDENCIES ####################################################################
