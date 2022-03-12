@@ -5,6 +5,13 @@ terraform {
       version = "~> 3.27"
     }
   }
+    cloud {
+    organization = "devops-llabbe"
+
+    workspaces {
+      name = "crud-app-terraform"
+    }
+  }
 
   required_version = ">= 0.14.9"
 }

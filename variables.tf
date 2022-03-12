@@ -50,4 +50,15 @@ variable "home_ip" {
 variable "public_key" {
   description = "public key to ssh into ec2 web server instance"
   type        = string
+  default     = "sha ..."
+}
+
+variable "AWS_SECRET_ACCESS_KEY" {
+  type    = string
+  default = ""
+}
+
+variable "AWS_ACCESS_KEY_ID" {
+  type    = string
+  default = ""
 }
