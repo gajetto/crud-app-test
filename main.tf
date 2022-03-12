@@ -57,9 +57,6 @@ resource "aws_instance" "web_server" {
   user_data = "${file("${path.module}/init.sh")}"
 }
 
-
-
-
 resource "aws_instance" "db_server" {
   # count         = var.number_of_instances # create 2 ec2 instances
   ami                         = var.ami
@@ -87,16 +84,6 @@ resource "aws_network_interface" "network-web" {
   private_ips     = ["10.0.0.50"]
   security_groups = [aws_security_group.sg-web.id]
 }
-
-
-# resource "aws_network_interface" "network-db" {
-#   #count = var.number_of_nics
-#   subnet_id       = aws_subnet.private-subnet.id
-#   private_ips     = ["10.0.1.50"]
-#   security_groups = [aws_security_group.sg-db.id]
-# }
-
-
 
 
 resource "aws_vpc" "prod-vpc" {
