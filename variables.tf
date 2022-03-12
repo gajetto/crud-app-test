@@ -47,7 +47,7 @@ variable "home_ip" {
 }
 
 
-# variable "public_key" {
-#   description = "public key to ssh into ec2 web server instance"
-#   type        = string
-# }
+variable "public_key" {
+  description = "public key to ssh into ec2 web server instance"
+  type        = string
+}
