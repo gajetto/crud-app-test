@@ -440,7 +440,7 @@ resource "aws_iam_role_policy_attachment" "policy-codedeploy-faccess" {
 
 
 resource "aws_codedeploy_app" "crud_app" {
-  name = "CRUD_APP_TEST"
+  name = "CRUD_APP"
 }
 
 

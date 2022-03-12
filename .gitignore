@@ -1,3 +1,23 @@
+.terraform.lock.hcl  
+terraform.tfstate.backup  
+terraform.tfstate  
+/.terraform 
+\.terraform\providers\registry.terraform.io\hashicorp\aws\3.74.1\windows_amd64\terraform-provider-aws_v3.74.1_x5.exe
+.terraform\providers\registry.terraform.io\hashicorp\aws\3.74.1\windows_amd64\terraform-provider-aws_v3.74.1_x5.exe
+/.terraform/providers/registry.terraform.io/hashicorp/aws/3.74.1/windows_amd64/terraform-provider-aws_v3.74.1_x5.exe
+.terraform/providers/registry.terraform.io/hashicorp/aws/3.74.1/windows_amd64/terraform-provider-aws_v3.74.1_x5.exe
+/.terraform
+\.terraform
+/.terraform/**
+\.terraform\**
+**/.terraform
+**\.terraform
+**/.terraform/**
+**\.terraform\**
+.terraform**/
+.terraform**\
+
+
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
