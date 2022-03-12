@@ -1,7 +1,7 @@
 variable "environment" {
   description = "in which environment resources are created"
   type        = string
-  default = "production"
+  default     = "production"
 }
 
 variable "number_of_instances" {
@@ -18,9 +18,9 @@ variable "number_of_nics" {
 
 
 variable "ami" {
-  
-  type        = string
-  default     = "ami-07fb45b963bedd1e1" # Suse linux distro // eu-west-3 - Paris DC
+
+  type    = string
+  default = "ami-07fb45b963bedd1e1" # Suse linux distro // eu-west-3 - Paris DC
 }
 
 #variable "ami" {
@@ -41,13 +41,13 @@ variable "instance_type" {
 }
 
 variable "home_ip" {
-    description = "my own home ip address"
-    type        = string
-    default     = "51.154.203.242/32"
+  description = "my own home ip address"
+  type        = string
+  default     = "51.154.203.242/32"
 }
 
 
 variable "public_key" {
-    description = "public key to ssh into ec2 web server instance"
-    type = string
+  description = "public key to ssh into ec2 web server instance"
+  type        = string
 }
