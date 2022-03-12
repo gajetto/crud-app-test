@@ -10,18 +10,18 @@ on:
   push:
     branches: 
       - main
-    # paths:
-    #   - '**.tf'
-    #   - '**.tfvars'
-    #   - 'init_db.sh'
-    #   - 'init.sh'
-    #   - 'modules/**'
-    #   - '.github/workflows/terraform.yml'
+    paths:
+      - '**.tf'
+      - '**.tfvars'
+      - 'init_db.sh'
+      - 'init.sh'
+      - 'modules/**'
+      - '.github/workflows/terraform.yml'
 jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.head.ref == 'terraform' || github.event.push == true }}
+    if: github.event.pull_request.head.ref == 'terraform' || github.event.push == true
     steps:
       - name: Checkout
         uses: actions/checkout@v2
