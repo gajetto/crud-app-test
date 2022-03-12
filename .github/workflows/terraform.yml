@@ -4,20 +4,24 @@ on:
   pull_request:
     branches:
       - main
-    paths:
-      - terraform/**
+
+
   # Hotfix process when pushing directly to master / Only to be used by myself locally 
   push:
     branches: 
       - main
     paths:
-      - terraform/**
-      - terraform/.github/workflow/terraform.yml
+      - '**.tf'
+      - '**.tfvars'
+      - 'init_db.sh'
+      - 'init.sh'
+      - 'modules/**'
+      - '.github/workflows/terraform.yml'
 jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
-    #if: github.event.pull_request.head.ref == 'terraform' || github.event.push == true
+    if: ${{ github.event.pull_request.head.ref == 'terraform' || github.event.push == true }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
