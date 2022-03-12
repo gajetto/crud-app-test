@@ -1,10 +1,10 @@
-name: Provision infrastructure
+name: Provision Infrastructure
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   terraform:
@@ -18,9 +18,9 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-        # terraform_version: 0.13.0
+          # terraform_version: 0.13.0
           cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
-      
+
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
@@ -68,7 +68,6 @@ jobs:
               repo: context.repo.repo,
               body: output
             })
-
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
