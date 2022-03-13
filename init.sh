@@ -4,7 +4,7 @@ sudo yum update -y
 sudo mkdir -p /var/www/crud-app-test
 csudo hown -R ec2-user:ec2-user /var/www/
 
-cd
+cd /home/ec2-user
 
 sudo echo -e 'alias ll="ls -larth"
 alias nets="sudo netstat -tlpn"
