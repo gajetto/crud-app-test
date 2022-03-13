@@ -42,7 +42,7 @@ provider "aws" {
 
 resource "aws_key_pair" "key_pair" {
   key_name   = "ec2-keys"
-  public_key = var.public_key
+  public_key = var.pub_key
 }
 
 
