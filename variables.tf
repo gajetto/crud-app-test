@@ -60,8 +60,3 @@ variable "AWS_ACCESS_KEY_ID" {
   type    = string
   default = ""
 }
-
-variable "pub_key" {
-  type    = string
-  default = ""
-}
