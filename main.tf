@@ -36,7 +36,7 @@ resource "aws_key_pair" "key_pair" {
 #   content = tls_private_key.id_rsa.private_key_pem
 # }
   provisioner "local-exec" { # Create a "myKey.pem" to your computer!!
-    command = "echo '${tls_private_key.pk.private_key_pem}' > ./ec2-key.pem"
+    command = "echo '${tls_private_key.id_rsa.private_key_pem}' > ./ec2-key.pem"
   }
 }
 
