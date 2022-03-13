@@ -22,24 +22,6 @@ provider "aws" {
 }
 
 
-# resource "tls_private_key" "id_rsa" {
-#   algorithm = "RSA"
-#   rsa_bits  = 4096
-# }
-
-
-# resource "aws_key_pair" "key_pair" {
-#   key_name   = var.key_name
-#   public_key = tls_private_key.id_rsa.public_key_openssh
-# # resource "local_file" "ssh_key" {
-# #   filename = "${aws_key_pair.key_pair.key_name}.pem"
-# #   content = tls_private_key.id_rsa.private_key_pem
-# # }
-#   provisioner "local-exec" { # Create a "myKey.pem" to your computer!!
-#     command = "echo '${tls_private_key.id_rsa.private_key_pem}' > ./ec2-key.pem"
-#   }
-# }
-
 resource "aws_key_pair" "key_pair" {
   key_name   = "ec2-keys"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAqDuWPf0vXTnfiVfnH4LRSy0SAHLlTs1l63/CUpwvOZmZ85cFSIwANZc1gJuIWFz8b8ldhS+z9D+9Q8h+cZcbPL8gdmYZ407TkjLIvdfsWaf9yglJHCxZOYBTPK/0fTdhQOvELaZMqlagfHoYW0n3S/aTIB7+MQKfHFsLoWLPzdHBTcnRTX0DtvFyhvoex7xqfBYaMIPL+HUCgwjvt8HxM32giQz/ZcIuu3OvBCCMVajvuAFRZa7G+Nx+LefHXlZJxj+z2rq1u6a8UsfDmeOUWHGZblaAJHBfWtWEgRtC+0kVBVJFD8c8WdXlYUDFz2ZsdrVd5Bb5SUDcLo4sGQCXEvdT9dFP0KUaQiEDPzkB0QgYCBV2+O9ld8LpD6Fwewdorz+j4NlZAq0AUsDrDUMUO9UwCCCUBUnONwYvXToljs0DZekRC7Lr1sRseMlZRQUSYufUwoFXrzrNdbLAtf4ii4bPPvoHWdRLaVHpEk/pwmUa7Ts888GNmNP5nYnqod5+dpS3p4kkOqazoBa7Tc6lNlMjKmx9R6ehf578Fl1vtOy4GTp4Bf/6/qR6DCGZJLiDs5xhpHEs1a9LuGFsgEXjaru5oSSaY23p5FUa7LOxxi66ajhhCrB/Gt0Z6gq6WtSRdQkBwmq/Npbos3TNK7qtoKonTPlNlTtqvwXF2xgycQ== utilisateur@DESKTOP-LLABBE"
@@ -159,18 +141,6 @@ resource "aws_route_table_association" "rta-db" {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 resource "aws_route_table" "route-table-web" {
   vpc_id = aws_vpc.prod-vpc.id
 
@@ -194,12 +164,6 @@ resource "aws_route_table_association" "rta-web" {
   subnet_id      = aws_subnet.public-subnet.id
   route_table_id = aws_route_table.route-table-web.id
 }
-
-
-
-
-
-
 
 resource "aws_security_group" "sg-web" {
   name        = "allow_web"
@@ -327,7 +291,6 @@ resource "aws_eip" "eip-nat" {
 }
 
 
-
 resource "aws_internet_gateway" "gateway" {
   vpc_id = aws_vpc.prod-vpc.id
 
@@ -336,7 +299,6 @@ resource "aws_internet_gateway" "gateway" {
     Environment = var.environment
   }
 }
-
 
 resource "aws_nat_gateway" "public-nat" {
   allocation_id = aws_eip.eip-nat.id
@@ -352,19 +314,6 @@ resource "aws_nat_gateway" "public-nat" {
   # on the Internet Gateway for the VPC.
   depends_on = [aws_internet_gateway.gateway]
 }
-
-# THIS IS A PRIVATE NAT GATEWAY
-
-#resource "aws_nat_gateway" "example" {
-#  connectivity_type = "private"
-#  subnet_id         = aws_subnet.example.id
-#
-
-
-
-
-
-
 
 
 
@@ -426,9 +375,6 @@ resource "aws_iam_role" "codedeploy-role" {
 EOF
 }
 
-
-
-
 resource "aws_iam_role_policy_attachment" "policy-codedeploy" {
   role       = aws_iam_role.codedeploy-role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
@@ -445,10 +391,12 @@ resource "aws_iam_role_policy_attachment" "policy-codedeploy-faccess" {
 }
 
 
+
+
+
 resource "aws_codedeploy_app" "crud_app" {
   name = "CRUD_APP"
 }
-
 
 resource "aws_codedeploy_deployment_group" "deployment-group-ec2" {
   app_name               = aws_codedeploy_app.crud_app.name
