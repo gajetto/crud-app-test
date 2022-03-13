@@ -13,7 +13,6 @@ alias app="cd /var/www/crud-app-test/"' >> .bashrc
 source .bashrc
 
 
-
 #Adding node 16x in yum repo 
 curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash -
 
