@@ -10,4 +10,4 @@ cd ../src
 
 npm start
 
-echo "started successfully"
+echo "started successfully AMAZING"

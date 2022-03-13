@@ -8,7 +8,8 @@ cd /home/ec2-user
 
 sudo echo -e 'alias ll="ls -larth"
 alias nets="sudo netstat -tlpn"
-alias app="cd /var/www/crud-app-test/"' >> .bashrc
+alias app="cd /var/www/crud-app-test/"
+alias deploy="sudo service codedeploy-agent status"' >> .bashrc
 
 source .bashrc
 
