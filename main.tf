@@ -31,9 +31,14 @@ resource "tls_private_key" "id_rsa" {
 resource "aws_key_pair" "key_pair" {
   key_name   = var.key_name
   public_key = tls_private_key.id_rsa.public_key_openssh
+# resource "local_file" "ssh_key" {
+#   filename = "${aws_key_pair.key_pair.key_name}.pem"
+#   content = tls_private_key.id_rsa.private_key_pem
+# }
+  provisioner "local-exec" { # Create a "myKey.pem" to your computer!!
+    command = "echo '${tls_private_key.pk.private_key_pem}' > ./ec2-key.pem"
+  }
 }
-
-
 
 resource "aws_instance" "web_server" {
   # count         = var.number_of_instances # create 2 ec2 instances
