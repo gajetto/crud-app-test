@@ -5,7 +5,7 @@ terraform {
       version = "~> 3.27"
     }
   }
-    cloud {
+  cloud {
     organization = "devops-llabbe"
 
     workspaces {
@@ -21,19 +21,19 @@ provider "aws" {
   region  = "eu-west-3"
 }
 
-# # this will create a key with RSA algorithm with 4096 rsa bits
-# resource "tls_private_key" "private_key" {
-#   algorithm = "RSA"
-#   rsa_bits  = 4096
-# }
 
-# this resource will create a key pair using above private key
-resource "aws_key_pair" "key_pair" {
-  key_name   = "front-ec2-key"
-  public_key = var.public_key
-
-  ##depends_on = [tls_private_key.private_key]
+resource "tls_private_key" "id_rsa" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
 }
+
+
+resource "aws_key_pair" "key_pair" {
+  key_name   = var.key_name
+  public_key = tls_private_key.id_rsa.public_key_openssh
+}
+
+
 
 resource "aws_instance" "web_server" {
   # count         = var.number_of_instances # create 2 ec2 instances
@@ -46,35 +46,35 @@ resource "aws_instance" "web_server" {
     device_index         = 0
     network_interface_id = aws_network_interface.network-web.id
     #network_interface_id = aws_network_interface.network-web[count.index].id
-  
+
   }
-  
+
   tags = {
     Name = "${var.environment}-web-server"
     #Name = "${var.environment}-web-server ${count.index}"
     Environment = var.environment
   }
-  user_data = "${file("${path.module}/init.sh")}"
+  user_data = file("${path.module}/init.sh")
 }
 
 resource "aws_instance" "db_server" {
   # count         = var.number_of_instances # create 2 ec2 instances
-  ami                         = var.ami
-  instance_type               = var.instance_type
-  key_name                    = aws_key_pair.key_pair.id
-  
+  ami           = var.ami
+  instance_type = var.instance_type
+  key_name      = aws_key_pair.key_pair.id
+
   associate_public_ip_address = false
   subnet_id                   = aws_subnet.private-subnet.id
   private_ip                  = "10.0.1.50"
   vpc_security_group_ids      = [aws_security_group.sg-db.id]
-  
+
   tags = {
     Name        = "${var.environment}-db-server"
     Environment = var.environment
   }
-  user_data = "${file("${path.module}/init_db.sh")}"
+  user_data = file("${path.module}/init_db.sh")
 
-  depends_on        = [aws_nat_gateway.public-nat]
+  depends_on = [aws_nat_gateway.public-nat]
 }
 
 
@@ -464,10 +464,10 @@ resource "aws_codedeploy_deployment_group" "deployment-group-ec2" {
 resource "aws_codedeploy_deployment_config" "deployment-config-ec2" {
   deployment_config_name = "FRONT_DC"
   compute_platform       = "Server"
- 
+
   minimum_healthy_hosts {
-    type = "HOST_COUNT"
+    type  = "HOST_COUNT"
     value = 0
   }
-   
+
 }

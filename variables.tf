@@ -46,11 +46,9 @@ variable "home_ip" {
   default     = "51.154.203.242/32"
 }
 
-
-variable "public_key" {
-  description = "public key to ssh into ec2 web server instance"
-  type        = string
-  default     = "sha ..."
+variable "key_name" {
+  type    = string
+  default = "ec2-bastion-key"
 }
 
 variable "AWS_SECRET_ACCESS_KEY" {
