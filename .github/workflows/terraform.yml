@@ -89,7 +89,7 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
-
+      
 # IN CASE WE NEED TO ADD A DEV ENVIRONMENT ON CLOUD WE CAN RUN THIS STEP AS FOLLOWS :
 
       #  - name: Set Workspace

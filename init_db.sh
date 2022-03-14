@@ -9,13 +9,21 @@ until ping -c1 www.google.com &>/dev/null; do
     sleep 1
 done
 
-yum update -y
+cd /home/ec2-user
 
-chown -R ec2-user /etc/yum.repos.d/
+sudo echo -e 'alias ll="ls -larth"
+alias nets="sudo netstat -tlpn"
+alias mong="sudo systemctl status mongod.service"' >> .bashrc
 
-echo "WRITE INTO YUM MONGO REPO"
+source .bashrc
 
-echo -e "[mongodb-org-5.0]
+sudo yum update -y
+
+sudo chown -R ec2-user /etc/yum.repos.d/
+
+sudo echo "WRITE INTO YUM MONGO REPO"
+
+sudo echo -e "[mongodb-org-5.0]
 name=MongoDB Repository
 baseurl=https://repo.mongodb.org/yum/amazon/2/mongodb-org/5.0/x86_64/
 gpgcheck=1

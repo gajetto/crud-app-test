@@ -32,7 +32,6 @@ resource "aws_instance" "web_server" {
   instance_type        = var.instance_type
   key_name             = aws_key_pair.key_pair.id
   iam_instance_profile = aws_iam_instance_profile.ec2-profile.name
-  #associate_with_private_ip = "10.0.1.50"
   network_interface {
     device_index         = 0
     network_interface_id = aws_network_interface.network-web.id

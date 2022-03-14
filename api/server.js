@@ -12,7 +12,7 @@ mongoose.Promise = global.Promise;
 
 let password =  process.env.DB_PASSWORD;
 let user = process.env.DB_USER;
-let dbname = process.env.DB_NAME
+let dbname = process.env.DB_NAME;
 
 
 mongoose.connect(dbname,
@@ -25,7 +25,7 @@ mongoose.connect(dbname,
 }
   ).then(
   () => {console.log('Database is connected') },
-  err => { console.log('Can not connect to the database'+ err)}
+  err => { console.log('Can not conne to the database'+ err)}
 );
   
 
