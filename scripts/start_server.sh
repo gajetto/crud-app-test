@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# move .env_prod file for db authentication
+mv /tmp/scp/github/workspace/.env /var/www/crud-app-test/api
+
 cd /var/www/crud-app-test/api
 # install forever module for service availaibility
 npm install -g --save forever 
