@@ -28,7 +28,7 @@ resource "aws_key_pair" "key_pair" {
 }
 
 
-resource "aws_instance" "web_server" {
+resource "aws_instance" "web_server_one" {
   # count         = var.number_of_instances # create 2 ec2 instances
   ami                  = var.ami
   instance_type        = var.instance_type
@@ -37,16 +37,39 @@ resource "aws_instance" "web_server" {
   #associate_with_private_ip = "10.0.1.50"
   network_interface {
     device_index         = 0
-    network_interface_id = aws_network_interface.network-web.id
+    network_interface_id = aws_network_interface.network-web-one.id
     #network_interface_id = aws_network_interface.network-web[count.index].id
 
   }
-
   tags = {
-    Name = "${var.environment}-web-server"
+    Name = "${var.environment}-web-server-1"
     #Name = "${var.environment}-web-server ${count.index}"
     Environment = var.environment
   }
+
+  user_data = file("${path.module}/init.sh")
+}
+
+
+resource "aws_instance" "web_server_two" {
+  # count         = var.number_of_instances # create 2 ec2 instances
+  ami                  = var.ami
+  instance_type        = var.instance_type
+  key_name             = aws_key_pair.key_pair.id
+  iam_instance_profile = aws_iam_instance_profile.ec2-profile.name
+  #associate_with_private_ip = "10.0.1.50"
+  network_interface {
+    device_index         = 0
+    network_interface_id = aws_network_interface.network-web-two.id
+    #network_interface_id = aws_network_interface.network-web[count.index].id
+
+  }
+  tags = {
+    Name = "${var.environment}-web-server-2"
+    #Name = "${var.environment}-web-server ${count.index}"
+    Environment = var.environment
+  }
+
   user_data = file("${path.module}/init.sh")
 }
 
@@ -71,10 +94,16 @@ resource "aws_instance" "db_server" {
 }
 
 
-resource "aws_network_interface" "network-web" {
+resource "aws_network_interface" "network-web-one" {
   #count = var.number_of_nics
   subnet_id       = aws_subnet.public-subnet.id
   private_ips     = ["10.0.0.50"]
+  security_groups = [aws_security_group.sg-web.id]
+}
+resource "aws_network_interface" "network-web-two" {
+  #count = var.number_of_nics
+  subnet_id       = aws_subnet.public-subnet.id
+  private_ips     = ["10.0.0.51"]
   security_groups = [aws_security_group.sg-web.id]
 }
 
@@ -268,10 +297,18 @@ resource "aws_security_group" "sg-db" {
 
 
 
-resource "aws_eip" "eip-web" {
+resource "aws_eip" "eip-web-one" {
   #for_each = aws_instance.web_server
   #instance   = each.value.id
-  instance   = aws_instance.web_server.id
+  instance   = aws_instance.web_server_one.id
+  vpc        = true
+  depends_on = [aws_internet_gateway.gateway]
+}
+
+resource "aws_eip" "eip-web-two" {
+  #for_each = aws_instance.web_server
+  #instance   = each.value.id
+  instance   = aws_instance.web_server_two.id
   vpc        = true
   depends_on = [aws_internet_gateway.gateway]
 }
@@ -309,7 +346,6 @@ resource "aws_nat_gateway" "public-nat" {
 }
 
 
-
 resource "aws_iam_role" "deploy-ec2-role" {
   name = "DEPLOY-EC2-SERVICE-ROLE"
 
@@ -339,13 +375,6 @@ resource "aws_iam_instance_profile" "ec2-profile" {
   name = "EC2_CODEDEPLOY_PROFILE"
   role = aws_iam_role.deploy-ec2-role.name
 }
-
-
-
-
-
-
-
 
 
 resource "aws_iam_role" "codedeploy-role" {
@@ -382,9 +411,6 @@ resource "aws_iam_role_policy_attachment" "policy-codedeploy-faccess" {
   role       = aws_iam_role.codedeploy-role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployFullAccess"
 }
-
-
-
 
 
 resource "aws_codedeploy_app" "crud_app" {
@@ -424,3 +450,20 @@ resource "aws_codedeploy_deployment_config" "deployment-config-ec2" {
   }
 
 }
+
+
+# resource "aws_lb" "load-balancer" {
+#   name               = "application_load_balancer"
+#   internal           = false
+#   load_balancer_type = "application"
+#   security_groups    = [aws_security_group.sg-web.id]
+#   subnets            = [for subnet in aws_subnet.public : subnet.id]
+
+#   enable_deletion_protection = true
+
+
+
+#   tags = {
+#     Environment = var.environment
+#   }
+# }
