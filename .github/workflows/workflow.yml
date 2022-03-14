@@ -24,23 +24,17 @@ jobs:
 
     - name: install modules inside api folder
       run: |
-        pwd
         cd api
-        pwd
         npm install
     
     - name: set up mongodb connection
       run: |
-        pwd
         cd api
-        pwd
         echo -e "SKIP_PREFLIGHT_CHECK=true" > .env
         echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_DEV }}" >> .env
         echo -e "DB_USER=${{ secrets.DB_USER_DEV }}" >> .env
         echo -e "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
         echo -e "DEBUGLEVEL=5" >> .env
-        ls -larth  
-        cat .env
 
     - name: install modules root directory
       run: |
@@ -60,6 +54,25 @@ jobs:
         cd ../api
         pwd
         npm test
+
+    - name: Config Database
+      run: |
+        echo -e "SKIP_PREFLIGHT_CHECK=true" > .env
+        echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" >> .env
+        echo -e "DB_USER=${{ secrets.DB_USER_PROD }}" >> .env
+        echo -e "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> .env
+        echo -e "DEBUGLEVEL=5" >> .env
+
+
+    - name: copy file via ssh key
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ec2-user
+        port: 22
+        key: ${{ secrets.EC2_SSH_KEY }}
+        source: "/home/runner/work/terraform-app/terraform-app/.env"
+        target: "/tmp/scp"
 
 
 
@@ -87,22 +100,4 @@ jobs:
     needs: [continuous-deployment]
     steps: 
 
-    - name: Config Database
-      run: |
-        pwd
-        echo -e "SKIP_PREFLIGHT_CHECK=true" > .env
-        echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" >> .env
-        echo -e "DB_USER=${{ secrets.DB_USER_PROD }}" >> .env
-        echo -e "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> .env
-        echo -e "DEBUGLEVEL=5" >> .env
-        pwd
 
-    - name: copy file via ssh key
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ec2-user
-        port: 22
-        key: ${{ secrets.EC2_SSH_KEY }}
-        source: "/home/runner/work/terraform-app/terraform-app/.env"
-        target: "/tmp/scp"
