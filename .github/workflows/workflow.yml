@@ -104,5 +104,5 @@ jobs:
         username: ec2-user
         port: 22
         key: ${{ secrets.EC2_SSH_KEY }}
-        source: "/.env"
-        target: "/tmp"
+        source: "/home/runner/work/terraform-app/terraform-app/.env"
+        target: "/tmp/.env"
