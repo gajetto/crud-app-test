@@ -12,7 +12,7 @@ mongoose.Promise = global.Promise;
 
 let password =  process.env.DB_PASSWORD;
 let user = process.env.DB_USER;
-let dbname = process.env.DB_NAME
+let dbname = process.env.DB_NAME;
 
 
 mongoose.connect(dbname,
