@@ -8,7 +8,7 @@ npm install -g --save forever
 npm run daemon
 
 cd ../src
-
+# sudo pm2 start ‘npm start.’
 npm start
 
 echo "started successfully AMAZING"

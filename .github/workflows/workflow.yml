@@ -5,101 +5,104 @@ on:
    branches: [ main ]
 
 jobs:
-#   continuous-integration:
+  continuous-integration:
 
-#     runs-on: ubuntu-latest
-#     if: github.event.pull_request.head.ref == 'dev'
-#     steps:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.ref == 'dev'
+    steps:
     
-#     - name: checkout code
-#       uses: actions/checkout@v2
+    - name: checkout code
+      uses: actions/checkout@v2
 
-#     - name: Use Node.js 16.14.0
-#       uses: actions/setup-node@v2
-#       with:
-#         node-version: 16.14.0
-# #        cache: 'npm'
-#     - name: update npm 
-#       run: npm install -g npm@latest
+    - name: Use Node.js 16.14.0
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16.14.0
+#        cache: 'npm'
+    - name: update npm 
+      run: npm install -g npm@latest
 
-#     - name: install modules inside api folder
-#       run: |
-#         pwd
-#         cd api
-#         pwd
-#         npm install
+    - name: install modules inside api folder
+      run: |
+        pwd
+        cd api
+        pwd
+        npm install
     
-#     - name: set up mongodb connection
-#       run: |
-#         pwd
-#         cd api
-#         pwd
-#         echo -e "SKIP_PREFLIGHT_CHECK=true" > .env
-#         echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_DEV }}" >> .env
-#         echo -e "DB_USER=${{ secrets.DB_USER_DEV }}" >> .env
-#         echo -e "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
-#         echo -e "DEBUGLEVEL=5" >> .env
-#         ls -larth  
-#         cat .env
+    - name: set up mongodb connection
+      run: |
+        pwd
+        cd api
+        pwd
+        echo -e "SKIP_PREFLIGHT_CHECK=true" > .env
+        echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_DEV }}" >> .env
+        echo -e "DB_USER=${{ secrets.DB_USER_DEV }}" >> .env
+        echo -e "DB_NAME=${{ secrets.DB_NAME_DEV }}" >> .env
+        echo -e "DEBUGLEVEL=5" >> .env
+        ls -larth  
+        cat .env
 
-#     - name: install modules root directory
-#       run: |
-#         pwd
-#         cd src
-#         pwd
-#         npm ci
+    - name: install modules root directory
+      run: |
+        pwd
+        cd src
+        pwd
+        npm ci
 
-#     - name: run build 
-#       run: npm run build
+    - name: run build 
+      run: npm run build
 
-#     - name: run unit testing  
-#       run: |
-#         cd src
-#         pwd
-#         npm test
-#         cd ../api
-#         pwd
-#         npm test
+    - name: run unit testing  
+      run: |
+        cd src
+        pwd
+        npm test
+        cd ../api
+        pwd
+        npm test
 
 
 
-#   continuous-deployment:
-#     runs-on: ubuntu-latest
-#     needs: [continuous-integration]
-#     steps:
+  continuous-deployment:
+    runs-on: ubuntu-latest
+    needs: [continuous-integration]
+    steps:
     
-#     - name: Configure AWS Credentials
-#       uses: aws-actions/configure-aws-credentials@v1
-#       with:
-#         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#         aws-region: eu-west-3
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-3
 
-#     - name: Create CodeDeploy Deployment
-#       id: deploy
-#       run: |
-#         aws deploy create-deployment --application-name CRUD_APP --deployment-group-name FRONT_DG --deployment-config-name FRONT_DC --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+    - name: Create CodeDeploy Deployment
+      id: deploy
+      run: |
+        aws deploy create-deployment --application-name CRUD_APP --deployment-group-name FRONT_DG --deployment-config-name FRONT_DC --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
 
 
 
   configuration:
     runs-on: ubuntu-latest
-    # needs: [continuous-deployment]
-
+    needs: [continuous-deployment]
     steps: 
-      - uses: actions/checkout@v2 
-      - name: Deploy in EC2
-        env:
-            PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-            HOSTNAME : "ec2-13-36-110-124.eu-west-3.compute.amazonaws.com"
-            USER_NAME : "ec2-user"
-            
-        run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ec2-user@ec2-13-36-110-124.eu-west-3.compute.amazonaws.com
-          
-            #Now we have got the access of EC2 and we will start the deploy .
-            sudo echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" > /tmp/.env
-            sudo echo -e "DB_USER=${{ secrets.DB_USER_PROD }}" >> /tmp/.env
-            sudo echo -e "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> /tmp.env
-            sudo echo "IT IS DONE"
+
+    - name: Config Database
+      run: |
+        pwd
+        echo -e "SKIP_PREFLIGHT_CHECK=true" > .env
+        echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" >> .env
+        echo -e "DB_USER=${{ secrets.DB_USER_PROD }}" >> .env
+        echo -e "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> .env
+        echo -e "DEBUGLEVEL=5" >> .env
+        pwd
+
+    - name: copy file via ssh key
+      uses: appleboy/scp-action@master
+      with:
+        host: 13.36.110.124
+        username: ec2-user
+        port: 22
+        key: ${{ secrets.EC2_SSH_KEY }}
+        source: "/.env"
+        target: "/tmp"
