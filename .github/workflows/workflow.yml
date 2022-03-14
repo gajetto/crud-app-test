@@ -99,7 +99,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ec2-user@ec2-13-36-110-124.eu-west-3.compute.amazonaws.com
           
             #Now we have got the access of EC2 and we will start the deploy .
-            echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" > /tmp/.env
-            echo -e "DB_USER=${{ secrets.DB_USER_PROD }}" >> /tmp/.env
-            echo -e "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> /tmp.env
-            echo "IT IS DONE"
+            sudo echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" > /tmp/.env
+            sudo echo -e "DB_USER=${{ secrets.DB_USER_PROD }}" >> /tmp/.env
+            sudo echo -e "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> /tmp.env
+            sudo echo "IT IS DONE"
