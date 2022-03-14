@@ -21,12 +21,10 @@ provider "aws" {
   region  = "eu-west-3"
 }
 
-
 resource "aws_key_pair" "key_pair" {
   key_name   = "ec2-keys"
   public_key = var.public_key
 }
-
 
 resource "aws_instance" "web_server" {
   # count         = var.number_of_instances # create 2 ec2 instances
@@ -58,7 +56,7 @@ resource "aws_instance" "db_server" {
 
   associate_public_ip_address = false
   subnet_id                   = aws_subnet.private-subnet.id
-  private_ip                  = "10.0.1.50"
+  private_ip                  = "10.0.1.51"
   vpc_security_group_ids      = [aws_security_group.sg-db.id]
 
   tags = {
@@ -267,7 +265,6 @@ resource "aws_security_group" "sg-db" {
 
 
 
-
 resource "aws_eip" "eip-web" {
   #for_each = aws_instance.web_server
   #instance   = each.value.id
@@ -307,7 +304,6 @@ resource "aws_nat_gateway" "public-nat" {
   # on the Internet Gateway for the VPC.
   depends_on = [aws_internet_gateway.gateway]
 }
-
 
 
 resource "aws_iam_role" "deploy-ec2-role" {
