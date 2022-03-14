@@ -102,4 +102,4 @@ jobs:
             echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD_PROD }}" > /tmp/.env
             echo -e "DB_USER=${{ secrets.DB_USER_PROD }}" >> /tmp/.env
             echo -e "DB_NAME=${{ secrets.DB_NAME_PROD }}" >> /tmp.env
-           
+            echo "IT IS DONE"
