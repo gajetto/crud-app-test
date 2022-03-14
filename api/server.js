@@ -25,7 +25,7 @@ mongoose.connect(dbname,
 }
   ).then(
   () => {console.log('Database is connected') },
-  err => { console.log('Can not connect to the database'+ err)}
+  err => { console.log('Can not conne to the database'+ err)}
 );
   
 
