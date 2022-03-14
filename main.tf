@@ -56,7 +56,7 @@ resource "aws_instance" "db_server" {
 
   associate_public_ip_address = false
   subnet_id                   = aws_subnet.private-subnet.id
-  private_ip                  = "10.0.1.51"
+  private_ip                  = "10.0.1.50"
   vpc_security_group_ids      = [aws_security_group.sg-db.id]
 
   tags = {

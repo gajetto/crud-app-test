@@ -14,7 +14,7 @@ const saveUser = async ({ person_name, employer_name, person_id_number }) => {
 
 const getUser = async ({ person_id_number }) => {
   const user = await User.findOne({ person_id_number });
-  if(!user) throw new Error("No user not found with given profileId");
+  if(!user) throw new Error("No user not found with given ");
 
   return { person_name, employer_name, person_id_number }
 }
