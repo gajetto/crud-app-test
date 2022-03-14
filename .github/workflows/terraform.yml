@@ -23,7 +23,7 @@ jobs:
   terraform:
     name: Terraform
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.ref == 'terraform' || github.event_name == 'push'
+    if: github.event.pull_request.head.ref == 'terraform' || (github.event_name == 'push' && github.event.pull_request.head.ref == 'terraform')
     steps:
       - name: Checkout
         uses: actions/checkout@v2
