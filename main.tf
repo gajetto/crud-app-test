@@ -29,21 +29,19 @@ resource "aws_key_pair" "key_pair" {
 
 
 resource "aws_instance" "web_server" {
-  # count         = var.number_of_instances # create 2 ec2 instances
+  count                = var.number_of_instances
   ami                  = var.ami
   instance_type        = var.instance_type
   key_name             = aws_key_pair.key_pair.id
   iam_instance_profile = aws_iam_instance_profile.ec2-profile.name
   network_interface {
     device_index         = 0
-    network_interface_id = aws_network_interface.network-web.id
-    #network_interface_id = aws_network_interface.network-web[count.index].id
+    network_interface_id = aws_network_interface.network-web[count.index].id
 
   }
 
   tags = {
-    Name = "${var.environment}-web-server"
-    #Name = "${var.environment}-web-server ${count.index}"
+    Name = "${var.environment}-web-server-${count.index}"
     Environment = var.environment
   }
   user_data = file("${path.module}/init.sh")
@@ -183,6 +181,15 @@ resource "aws_security_group" "sg-web" {
     protocol    = "tcp"
     cidr_blocks = ["51.154.203.242/32"]
   }
+    ingress {
+    description = "SSH"
+    from_port   = 28683
+    to_port     = 28683
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+
   ingress {
     description = "REACT FRONT"
     from_port   = 3000
@@ -268,16 +275,13 @@ resource "aws_security_group" "sg-db" {
 
 
 resource "aws_eip" "eip-web" {
-  #for_each = aws_instance.web_server
-  #instance   = each.value.id
-  instance   = aws_instance.web_server.id
+  for_each = aws_instance.web_server
+  instance   = each.value.id
   vpc        = true
   depends_on = [aws_internet_gateway.gateway]
 }
 
 resource "aws_eip" "eip-nat" {
-  #for_each = aws_instance.web_server
-  #instance   = each.value.id
   vpc        = true
   depends_on = [aws_internet_gateway.gateway]
 }
