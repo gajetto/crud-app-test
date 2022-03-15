@@ -97,7 +97,7 @@ jobs:
 
   confuguration:
     runs-on: ubuntu-latest
-    needs: [continous-deployment]
+    needs: [continuous-deployment]
     steps:
     - name: Config Database
       run: |
