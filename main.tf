@@ -448,10 +448,8 @@ resource "aws_lb_target_group" "web-tg" {
 
 
 resource "aws_lb_target_group_attachment" "web-tg-attachment" {
-  count            = var.number_of_instances
+  count    = length(aws_instance.web_server)
   target_group_arn = aws_lb_target_group.web-tg.arn
-  target_id        = aws_instance.web_server[count.index].id
   port             = 3000
-  # count    = length(aws_instance.web_server)
-  # instance = element(aws_instance.web_server.*.id, count.index)
+  target_id = element(aws_instance.web_server.*.id, count.index)
 }
