@@ -27,7 +27,7 @@ resource "aws_key_pair" "key_pair" {
 }
 
 resource "aws_instance" "web_server" {
-  # count         = var.number_of_instances # create 2 ec2 instances
+  count                = var.number_of_instances # create 2 ec2 instances
   ami                  = var.ami
   instance_type        = var.instance_type
   key_name             = aws_key_pair.key_pair.id
@@ -35,29 +35,26 @@ resource "aws_instance" "web_server" {
   #associate_with_private_ip = "10.0.1.50"
   network_interface {
     device_index         = 0
-    network_interface_id = aws_network_interface.network-web.id
-    #network_interface_id = aws_network_interface.network-web[count.index].id
-
+    network_interface_id = aws_network_interface.network-web[count.index].id
   }
 
   tags = {
-    Name = "${var.environment}-web-server"
-    #Name = "${var.environment}-web-server ${count.index}"
+    Name        = "${var.environment}-web-server-${count.index + 1}"
     Environment = var.environment
   }
   user_data = file("${path.module}/init.sh")
 }
 
 resource "aws_instance" "db_server" {
-  # count         = var.number_of_instances # create 2 ec2 instances
   ami           = var.ami
   instance_type = var.instance_type
   key_name      = aws_key_pair.key_pair.id
 
   associate_public_ip_address = false
   subnet_id                   = aws_subnet.private-subnet.id
-  private_ip                  = "10.0.1.50"
-  vpc_security_group_ids      = [aws_security_group.sg-db.id]
+  #This could be instanciated as well
+  #private_ip                  = "10.0.1.50"
+  vpc_security_group_ids = [aws_security_group.sg-db.id]
 
   tags = {
     Name        = "${var.environment}-db-server"
@@ -70,9 +67,8 @@ resource "aws_instance" "db_server" {
 
 
 resource "aws_network_interface" "network-web" {
-  #count = var.number_of_nics
+  count           = var.number_of_nics
   subnet_id       = aws_subnet.public-subnet.id
-  private_ips     = ["10.0.0.50"]
   security_groups = [aws_security_group.sg-web.id]
 }
 
@@ -107,9 +103,6 @@ resource "aws_subnet" "private-subnet" {
   }
 }
 
-
-
-
 resource "aws_route_table" "route-table-db" {
   vpc_id = aws_vpc.prod-vpc.id
 
@@ -130,7 +123,6 @@ resource "aws_route_table_association" "rta-db" {
   subnet_id      = aws_subnet.private-subnet.id
   route_table_id = aws_route_table.route-table-db.id
 }
-
 
 resource "aws_route_table" "route-table-web" {
   vpc_id = aws_vpc.prod-vpc.id
@@ -263,14 +255,18 @@ resource "aws_security_group" "sg-db" {
   }
 }
 
-
-
 resource "aws_eip" "eip-web" {
   #for_each = aws_instance.web_server
   #instance   = each.value.id
-  instance   = aws_instance.web_server.id
-  vpc        = true
+  count    = length(aws_instance.web_server)
+  instance = element(aws_instance.web_server.*.id, count.index)
+  vpc      = true
+
+  tags = {
+    Name = "elastic-web-${count.index + 1}"
+  }
   depends_on = [aws_internet_gateway.gateway]
+
 }
 
 resource "aws_eip" "eip-nat" {
@@ -305,7 +301,6 @@ resource "aws_nat_gateway" "public-nat" {
   depends_on = [aws_internet_gateway.gateway]
 }
 
-
 resource "aws_iam_role" "deploy-ec2-role" {
   name = "DEPLOY-EC2-SERVICE-ROLE"
 
@@ -335,13 +330,6 @@ resource "aws_iam_instance_profile" "ec2-profile" {
   name = "EC2_CODEDEPLOY_PROFILE"
   role = aws_iam_role.deploy-ec2-role.name
 }
-
-
-
-
-
-
-
 
 
 resource "aws_iam_role" "codedeploy-role" {
@@ -379,10 +367,6 @@ resource "aws_iam_role_policy_attachment" "policy-codedeploy-faccess" {
   policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployFullAccess"
 }
 
-
-
-
-
 resource "aws_codedeploy_app" "crud_app" {
   name = "CRUD_APP"
 }
@@ -419,4 +403,56 @@ resource "aws_codedeploy_deployment_config" "deployment-config-ec2" {
     value = 0
   }
 
+}
+
+
+# Create Internet Facing Frontend ALB
+resource "aws_lb" "web-alb" {
+  name                       = "${var.environment}-web-alb"
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.sg-web.id]
+  subnets                    = [aws_subnet.public-subnet.id]
+  enable_deletion_protection = true
+
+  tags = {
+    Environment = "production"
+  }
+}
+
+# ALB Configuration for Frontend Target Group
+resource "aws_lb_listener" "web-listener" {
+  load_balancer_arn = aws_lb.web-alb.arn
+  port              = "80"
+  protocol          = "HTTP"
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.web-tg.arn
+  }
+}
+
+
+resource "aws_lb_target_group" "web-tg" {
+  name     = "${var.environment}-web-tg"
+  port     = 3000
+  protocol = "TCP"
+  vpc_id   = aws_vpc.prod-vpc.id
+
+  health_check {
+    enabled           = true
+    healthy_threshold = 2
+    interval          = 12
+    timeout           = 7
+
+  }
+}
+
+
+resource "aws_lb_target_group_attachment" "web-tg-attachment" {
+  count            = var.number_of_instances
+  target_group_arn = aws_lb_target_group.web-tg.arn
+  target_id        = aws_instance.web_server[count.index].id
+  port             = 3000
+  # count    = length(aws_instance.web_server)
+  # instance = element(aws_instance.web_server.*.id, count.index)
 }

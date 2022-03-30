@@ -7,15 +7,26 @@ variable "environment" {
 variable "number_of_instances" {
   description = "number of instances"
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "number_of_nics" {
   description = "number of network interfaces"
   type        = number
-  default     = 1
+  default     = 2
 }
 
+variable "number_of_subs_front" {
+  description = "number of public subnets"
+  type        = number
+  default     = 2
+}
+
+variable "number_of_subs_back" {
+  description = "number of private subnets"
+  type        = number
+  default     = 2
+}
 
 variable "ami" {
 
