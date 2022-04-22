@@ -1,3 +1,4 @@
+[![Board Status](https://dev.azure.com/ludoviclabbe/cf4ba1f3-0e25-4ca0-bc22-914aba6d808a/7cc57b9f-df92-4295-af3c-6f7805c15c52/_apis/work/boardbadge/9a0bf6aa-99c2-41d1-88bc-c004a4535aab)](https://dev.azure.com/ludoviclabbe/cf4ba1f3-0e25-4ca0-bc22-914aba6d808a/_boards/board/t/7cc57b9f-df92-4295-af3c-6f7805c15c52/Microsoft.RequirementCategory)
 ## 1. Employee CRUD App 
 Demoing basic functionality to update and display simple Employees and Employer data.
 
